@@ -1,4 +1,21 @@
 
+const id    = x      => x;
+const konst = x => y => x;
+const snd   = x => y => y;
+
+const T =  konst;
+const F =  snd;
+
+const and = a => b => a (b) (a);
+const or  = a => a (a) ;
+
+const Pair      =  fn => ln => sel =>  sel(fn)(ln) ;
+const firstname = konst;
+const lastname  = snd;
+
+const Left   = x => lch => rch => lch(x);
+const Right  = x => lch => rch => rch(x);
+const either = id;
 
 
 // ----- special -----
