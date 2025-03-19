@@ -4,6 +4,8 @@ const ball = {x:20, y:10, dx: 5, dy: 1};
 let ballSpeed = {x:0, y:0}
 let lastHeight = [];
 let running = true;
+let lastPositions = [];
+const maxTrackedPastPositions = 50;
 
 
 function start() {
@@ -55,6 +57,8 @@ function nextBoard() {
             ballSpeed.y = 35;
         }
 
+        saveCurrentPosToArr();
+
         ball.x += ballSpeed.x;
         ball.y += ballSpeed.y;
 
@@ -74,18 +78,42 @@ function nextBoard() {
 
 }
 
+function saveCurrentPosToArr(){
+    lastPositions.unshift({ // important to copy object, not just copy reference...
+        x: ball.x,
+        y: ball.y,
+    });
+
+}
+
 function display(context) {
     //fill canvas
     context.fillStyle = "blue";
     context.fillRect(0, 0, canvas.width, canvas.height);
+    drawPastBalls(context);
     drawBall(context)
 }
 
 function drawBall(context) {
-    context.fillStyle = "yellow";
+    context.globalAlpha = 1;
+    context.fillStyle = "black";
     context.beginPath();
     context.arc(ball.x, ball.y, radius, 0, 6.3, false);
     context.fill();
+}
+
+function drawPastBalls(context) {
+    context.fillStyle = "white";
+    let opacityCnt = 0.3;
+    let opacityStepper = opacityCnt / maxTrackedPastPositions + 1;
+    lastPositions.forEach(p => {
+        context.globalAlpha = opacityCnt;
+        opacityCnt -= opacityStepper;
+        context.beginPath();
+        context.arc(p.x, p.y, radius, 0, 6.3, false);
+        context.fill();
+    }
+    );
 }
 
 
