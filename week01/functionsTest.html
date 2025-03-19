@@ -13,6 +13,7 @@
         function fun1()    { return 1; }
 
         document.writeln( fun1()   === 1 );
+        document.writeln("16");
         document.writeln( fun1(42) === 1 );
 
         function fun2()    { return 1; }
@@ -39,6 +40,9 @@
         function doit(whatToDo) { // closure
             return function bla(arg) { return whatToDo(arg); }
         }
+
+        const doit11 = whatToDo => arg => whatToDo(arg);
+        document.writeln(doit11(fun2) (10) === 10);
 
         document.writeln( doit(fun1)(10) === 1 );
         document.writeln( doit(fun2)(10) === 10 );
