@@ -2,6 +2,8 @@
 const radius = 10;
 const ball = {x:20, y:10, dx: 5, dy: 1};
 let ballSpeed = {x:0, y:0}
+let lastHeight = [];
+let running = true;
 
 
 function start() {
@@ -23,25 +25,25 @@ function initializeSpeed() {
 }
 
 function nextBoard() {
-
+    if(running) {
         // handle ball is hitting the bounds
-        if(ball.x > 400 || ball.x < 0){
+        if (ball.x > 400 || ball.x < 0) {
             ballSpeed.x *= -1;
         }
-        if(ball.y > 400 || ball.y < 0){
+        if (ball.y > 400 || ball.y < 0) {
             ballSpeed.y *= -1;
             ball.y = 400;
         }
 
         // increase vertical velocity if falling
-        if(ballSpeed.y > 2){
+        if (ballSpeed.y > 2) {
             ballSpeed.y *= 1.15;
-        } else if(ballSpeed.y < -2) {
+        } else if (ballSpeed.y < -2) {
             ballSpeed.y /= 1.26;
-        }else{
+        } else {
             if (ballSpeed.y < -0.5) {
                 ballSpeed.y /= 5;
-            }else if (ballSpeed.y < 0.01){
+            } else if (ballSpeed.y < 0.01) {
                 ballSpeed.y = 0.02;
             } else {
                 ballSpeed.y *= 5;
@@ -49,7 +51,7 @@ function nextBoard() {
         }
 
         // decrease vertical velocity if rising
-        if(ballSpeed.y > 35){
+        if (ballSpeed.y > 35) {
             ballSpeed.y = 35;
         }
 
@@ -57,6 +59,18 @@ function nextBoard() {
         ball.y += ballSpeed.y;
 
 
+        // save last 10 heights to prevent infinite bouncing
+        lastHeight.unshift(400 - ball.y)
+        if(lastHeight.length > 10){
+            lastHeight.pop()
+        }
+
+        //if last 10 heights haven't been further apart than 5px we stop the bouncing.
+        let cumulativeVal = lastHeight.reduce((p, c) => p + c, 0);
+        if(cumulativeVal < 42){
+            running = false;
+        }
+    }
 
 }
 
