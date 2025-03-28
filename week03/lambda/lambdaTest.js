@@ -46,10 +46,10 @@ const dierk = Pair("Dierk")("König"); // immutable
 ok.push( dierk(firstname) === "Dierk");
 ok.push( dierk(lastname)  === "König");
 //
-// const tdierk = Triple("Dierk")("König")(50); // immutable
-// ok.push( tdierk(tfirstname) === "Dierk");
-// ok.push( tdierk(tlastname)  === "König");
-// ok.push( tdierk(tage)       === 50);
+//const tdierk = Triple("Dierk")("König")(50); // immutable
+//ok.push( tdierk(tfirstname) === "Dierk");
+//ok.push( tdierk(tlastname)  === "König");
+//ok.push( tdierk(tage)       === 50);
 //
 // // tuple
 // const [Person, fn, ln, ag] = Tuple(3);
@@ -76,9 +76,7 @@ const safeDiv = num => divisor =>
     ? Left("schlecht!")
     : Right(num / divisor);
 
-safeDiv(1)(1)
-      ( x => console.error(x))
-      ( x => console.log(x));
+safeDiv(1)(1)( x => console.error(x))( x => console.log(x));
 
 //
 // const [Cash, CreditCard, Invoice, PayPal, pay] = Choice(4);

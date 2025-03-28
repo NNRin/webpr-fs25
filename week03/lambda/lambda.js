@@ -9,13 +9,15 @@ const F =  snd;
 const and = a => b => a (b) (a);
 const or  = a => a (a) ;
 
-const Pair      =  fn => ln => sel =>  sel(fn)(ln) ;
-const firstname = konst;
+const fst = a => b => a;
+
+const Pair      =  fn => ln => select => select(fn)(ln) ;
+const firstname = fst;
 const lastname  = snd;
 
-const Left   = x => lch => rch => lch(x);
-const Right  = x => lch => rch => rch(x);
-const either = id;
+
+const Left = msg => l => r =>l(msg)
+const Right = msg => l => r =>r(msg)
 
 
 // ----- special -----
