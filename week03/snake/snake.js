@@ -1,24 +1,28 @@
-
-const north = {dx:  0, dy: -1};
-const east  = {dx:  1, dy:  0};
-const south = {dx:  0, dy:  1};
-const west  = {dx: -1, dy:  0};
+const CoordPair = x => y => fnc => fnc(x)(y);
+const north = CoordPair(0)(-1);
+const east  = CoordPair(1)(0);
+const south = CoordPair(0)(1);
+const west  = CoordPair(-1)(0);
 
 let direction = north;
 
 const clockwise = [north, east, south, west, north];
 const countercw = [north, west, south, east, north];
 
-const snake = [
-    {x: 10, y: 5},
-    {x: 10, y: 6},
-    {x: 10, y: 7},
-    {x: 10, y: 8},
-];
-let food = {x: 15, y: 15};
+const getX = x => y => x;
+const getY = x => y => y;
 
-function snakeEquals(a, b) {
-    return a.x === b.x && a.y === b.y;
+const snake = [
+    CoordPair(10)(5),
+    CoordPair(10)(6),
+    CoordPair(10)(7),
+    CoordPair(10)(8),
+];
+
+let food = CoordPair(15)(15);
+
+function snakeEquals(a , b) {
+    return a(getX) === b(getX) && a(getY) === b(getY);
 }
 
 function changeDirection(orientation) {
@@ -42,25 +46,32 @@ function start() {
     }, 1000 / 5);
 }
 
+const rdmCordPair = CoordPair(Math.floor(Math.random() * 20))(Math.floor(Math.random() * 20))
+
 function nextBoard() {
     const maxX = 20;
     const maxY = 20;
     const oldHead = snake[0];
 
+    /**
+     * Calculates next pos for snake head and adjusts for bounds if necessary.
+     * @param x X or Y Pos of snake
+     * @param max Maximum bound value
+     * @returns {*|number} new X or Y Pos of snake
+     */
     function inBounds(x, max) {
         if (x < 0)   { return max - 1 }
         if (x > max) { return 0 }
         return x
     }
 
-    const head = {
-        x: inBounds(oldHead.x + direction.dx, maxX),
-        y: inBounds(oldHead.y + direction.dy, maxY)
-    };
+    const head = CoordPair(inBounds(oldHead(getX) + direction(getX), maxX))
+                            (inBounds(oldHead(getY) + direction(getY), maxY));
+
+
 
     if (snakeEquals(food, head)) {  // check for found food
-        food.x = Math.floor(Math.random() * 20);   // place new food at random location
-        food.y = Math.floor(Math.random() * 20);
+        food = rdmCordPair;
     } else {
         // no food found => no growth despite new head => remove last element
         snake.pop()
@@ -86,7 +97,7 @@ function display(context) {
 }
 
 function fillBox(context, element) {
-    context.fillRect(element.x * 20 + 1, element.y * 20 + 1, 18, 18);
+    context.fillRect(element(getX) * 20 + 1, element(getY) * 20 + 1, 18, 18);
 }
 
 
