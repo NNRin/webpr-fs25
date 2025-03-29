@@ -1,11 +1,22 @@
-// requires ../lambda/lambda.js
-
+const Pair      = x => y => f => f (x) (y); // Vireo, V
+const id    = x => x;
+const konst = x => y => x; // Kestrel, K
+const fst = konst;
+const snd = x => y => y;
+const x   = konst;       // just an alias
+const y   = x => y => y; // Kite,    KI
 const MAX = 20;
+const Direction = Pair;
+const Position = Pair;
+const dx = x;
+const dy = y;
+const pairToString = a => a(x) + " " + a(y);
 
-const north = Pair( 0)(-1);
-const east  = Pair( 1)( 0);
-const south = Pair( 0)( 1);
-const west  = Pair(-1)( 0);
+
+const north = Direction( 0)(-1);
+const east  = Direction( 1)( 0);
+const south = Direction( 0)( 1);
+const west  = Direction(-1)( 0);
 
 let direction = north;
 
@@ -21,13 +32,13 @@ const snake = [
 let food    = Pair(15)(15);
 
 // function snakeEquals(a, b) { return a.x === b.x && a.y === b.y }
-const pairEq = a => b =>  undefined; // todo: your code here
+const pairEq = a => b =>  a(x) == b(x) && a(y) === b(y);
 
 // Pair + Pair = Pair        // Monoid
-const pairPlus = a => b =>  undefined; // todo: your code here
+const pairPlus = a => b => Pair(a(x) + b(x)) (a(y) + b(y));
 
 // Function and Pair = Pair  // Functor
-const pairMap = f => p =>  undefined; // todo: your code here
+const pairMap = p => f => Pair(f(p(x))) (f(p(y)));
 
 
 function changeDirection(orientation) {
@@ -42,14 +53,13 @@ function changeDirection(orientation) {
 */
 function safeGetElementById(id) {
     const result = document.getElementById(id);
-    return result === null; // todo: your code here
+    return result;
 }
 
 const log = s => console.log(s);
 
 function start() {
-
-    // todo: if safeGetElementById("canvas") yields an error message, log it. Otherwise startWithCanvas
+    startWithCanvas(safeGetElementById("canvas"));
 
 }
 
@@ -80,16 +90,15 @@ function nextBoard() {
     const max = 20;
     const oldHead = snake[0];
 
-    const newHead = undefined; // todo: your code here: old head plus direction
-    const head    = undefined; // todo: your code here: new head put in bounds
+    const newHead = pairPlus(oldHead)(direction);
+    const head = pairMap(newHead) (inBounds);
 
     const pickRandom = () => Math.floor(Math.random() * max);
-    if (true) {  // todo: have we found any food?
+    if (pairEq(head)(food)) {  // todo: have we found any food?
         food = Pair(pickRandom())(pickRandom());
     } else {
         snake.pop(); // no food found => no growth despite new head => remove last element
     }
-
     snake.unshift(head); // put head at front of the list
 }
 
