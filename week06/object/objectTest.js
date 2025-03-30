@@ -247,6 +247,8 @@
     const good = new Person("Good", "Boy");    // now it requires "new"
     const bad  = new Person("Bad", "Boy");     // distinct new instance
 
+
+
     ok.push(good.getName() === "Good Boy");    // without "new" it throws TypeError
     ok.push(bad.getName()  === "Bad Boy" );
 

@@ -1,5 +1,3 @@
-// Todo:
-
 // create a proper Player construction with
 // state:
 //   fallbackIndex = 0 // place to fall back on oopsie
@@ -8,7 +6,20 @@
 //   proceed(stride) // proceed so many places
 //   fallback()      // "oopsie": go back to last start (fallback position)
 //   turn()          // cash in your win, update fallback position for next turn
-// 
+//
+function Player() {
+    return {
+        fallbackIndex : 0,
+        progressIndex : 0,
+
+        getFallbackIndex : function() {return this.fallbackIndex},
+        getProgressIndex : function() {return this.progressIndex},
+        proceed : function(stride){this.progressIndex += stride},
+        fallback : function(){this.progressIndex = this.fallbackIndex},
+        turn : function(){this.fallbackIndex = this.progressIndex},
+    }
+}
+
 
 function start() {
     const fields = document.getElementById('fields');
@@ -49,4 +60,4 @@ function display() {
     progressField.setAttribute("CLASS", "field progress");
 }
 
-player = Player("One");
+player = Player();
