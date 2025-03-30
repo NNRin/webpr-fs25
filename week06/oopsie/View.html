@@ -21,6 +21,17 @@
         .progress {
             background: blue;
         }
+        .fallbackInactive {
+            border-color: red;
+            border-width: 3px;
+        }
+        .progressInactive {
+            background: red;
+        }
+        .bothOnPos {
+            background: purple;
+        }
+
         #dice {
             clear:both;
         }
@@ -44,7 +55,9 @@
     <button onclick="dice()">throw dice</button>
     <button onclick="turn()">turn</button>
 </div>
-
+<div id="goal">
+    []
+</div>
 
 </body>
 
